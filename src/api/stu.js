@@ -5,3 +5,9 @@ export const stuGet = () => {
         method: 'GET'
     })
 }
+
+export const stuDelete = (id) => {
+    return request(`/classes/stu?id=${id}`, {
+        method: 'DELETE'
+    })
+}
