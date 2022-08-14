@@ -5,17 +5,19 @@ import { stuGet, stuDelete } from '../../api/stu'
 
 export default function StuList() {
   const [data, setData] = useState([])
+  const [loading, setLoading] = useState(true)
 
   const getData = () => {
     stuGet().then(res => {
-      // console.log(res);
-      if (res.code === 200) {
-        setData(res.data)
-      }
+      console.log(res.results);
+      setData(res.results)
+      // 关闭loading
+      setLoading(false)
     })
   }
 
   useEffect(() => {
+    // 获取数据
     getData()
   }, [])
 
@@ -23,7 +25,7 @@ export default function StuList() {
     // console.log(id);
     stuDelete(id).then(res => {
       if (res.code === 200) {
-        // console.log(res);
+        // console.log(res, 111);
         getData()
         message.success(res.msg)
       }
@@ -58,12 +60,12 @@ export default function StuList() {
       render: (_, record) => (
         <Space size="middle">
           <Button type='primary' size='small'>编辑</Button>
-          <Button type='danger' size='small' onClick={() => deleteData(record.key)}>删除</Button>
+          <Button type='danger' size='small' onClick={() => deleteData(record.objectId)}>删除</Button>
         </Space>
       ),
     },
   ];
   return (
-    <Table columns={columns} dataSource={data} />
+    <Table loading={loading} columns={columns} dataSource={data} rowKey='objectId' />
   )
 }
